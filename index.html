@@ -105,6 +105,10 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
 @media(max-width:520px){.ptable{grid-template-columns:repeat(4,minmax(42px,1fr))}}
 
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="progress-sync.js"></script>
 </head>
 <body>
 <header class="hero">
@@ -126,6 +130,8 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
   <a href="#part-1">Часть 1</a>
   <a href="#part-2">Часть 2</a>
   <a href="#part-3">Часть 3</a>
+  <a href="progress.html">Мой прогресс</a>
+  <a href="parent.html">Для родителя</a>
   <div class="progress-wrap"><span id="progressText">0 / 48</span><div class="progress"><span id="progressBar"></span></div></div>
 </nav>
 
@@ -210,7 +216,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять разницу между телом, веществом и материалом.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри вводный урок «Предмет химии» на InternetUrok.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/8-klass/predmet-himii/predmet-himii" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Бесплатный урок OnlineSchool «Предмет химии. Роль химии в жизни человека» (RUTUBE, без абонемента).</p><a class="video-btn" href="https://rutube.ru/video/dc796b6fd70b533fa4a5b502fd83bc3e/" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй комнату или фасад. Подпиши 10 материалов: стекло, бетон, металл, краска, дерево, пластик, штукатурка, керамика, ткань, кирпич. Рядом попробуй написать, из каких веществ они могут состоять.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Объясни своими словами: чем предмет отличается от вещества?</p></div>
@@ -514,7 +520,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять, зачем атомам химическая связь.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри школьное объяснение химической связи в курсе 9 класса.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Денис Марков «Вся химия с нуля»: блок «Типы химической связи» начинается примерно с 42:37.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco&t=2557s" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй связи как соединения элементов конструкции: одиночные атомы → устойчивые комбинации.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Чем химическая связь похожа на соединение элементов конструкции, а чем нет?</p></div>
@@ -533,7 +539,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять образование ионов и ионных соединений.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери NaCl как модель.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Денис Марков: посмотри тот же блок про типы связи и обрати внимание на образование ионов и ионную связь.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco&t=2557s" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай комикс: Na отдаёт электрон, Cl принимает. Покажи появление Na⁺ и Cl⁻.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Почему противоположно заряженные ионы притягиваются?</p></div>
@@ -590,7 +596,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять относительную атомную и молекулярную массу.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Повтори по таблице Менделеева Ar и Mr.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/8-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Бесплатный урок OnlineSchool «Химические формулы»: Mr начинается примерно с 4:50.</p><a class="video-btn" href="https://rutube.ru/video/6465b55e4e501a5f91dbe7b022d0d328/" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Рассчитай Mr для H₂O, CO₂, CaCO₃, SiO₂.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Что означает Mr(CaCO₃)?</p></div>
@@ -609,7 +615,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять моль как способ считать огромное число частиц.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри объяснение количества вещества.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/8-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Денис Марков «Вся химия с нуля»: молярная масса — примерно с 1:43:06, количество вещества (моль) — с 1:44:25.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco&t=6186s" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Придумай свою аналогию: десяток, коробка плитки, палета кирпича, моль. Нарисуй её.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Почему химикам неудобно считать отдельные атомы?</p></div>
@@ -780,7 +786,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять, что в растворах участвуют ионы.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Используй курс 9 класса InternetUrok.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Бесплатный урок OnlineSchool «Электролитическая диссоциация»: ионы, электролиты и диссоциация кислот, оснований и солей.</p><a class="video-btn" href="https://rutube.ru/video/c31aab3912f3d1f4a14cf72e779afa61/" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Перепиши простую реакцию обмена в виде «какие частицы реально встречаются».</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Что такое ион?</p></div>
@@ -818,7 +824,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять общие свойства металлов.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри раздел «Металлы» в курсе 9 класса.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Бесплатный видеоурок «Общая характеристика металлов»: строение, свойства и химические реакции.</p><a class="video-btn" href="https://rutube.ru/video/2faf92027a2f9b6481fc818d06465949/" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сравни Fe, Al, Cu: плотность, цвет, проводимость, использование в зданиях.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Почему алюминий и сталь используются в разных конструкциях?</p></div>
@@ -970,7 +976,7 @@ main{max-width:1180px;margin:auto;padding:52px 24px 96px}
           <div class="lesson-body">
             <div class="grid2">
               <div class="info"><b>🎯 Цель</b><p>Понять условный заряд элементов в соединениях.</p></div>
-              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри раздел об ОВР в курсе 9 класса.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Бесплатный урок OnlineSchool «Окислительно-восстановительные реакции».</p><a class="video-btn" href="https://rutube.ru/video/091e433b41280a4ffa1f135aa118d99c/" target="_blank" rel="noopener">▶ Открыть бесплатное видео</a></div>
             </div>
             <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Определи степени окисления в H₂O, CO₂, Fe₂O₃, Al₂O₃.</p></div>
             <div class="check"><b>🔎 Проверка себя</b><p>Почему у кислорода часто степень окисления −2?</p></div>
@@ -1128,17 +1134,24 @@ function save(){ localStorage.setItem(KEY, JSON.stringify(state)); updateProgres
 document.querySelectorAll('.toggle').forEach(btn=>btn.addEventListener('click',()=>{
   const card=btn.closest('.lesson-card'); card.classList.toggle('open');
   const open=card.classList.contains('open'); btn.textContent=open?'Свернуть':'Открыть'; btn.setAttribute('aria-expanded',open);
+  if(open && window.ChemProgress) window.ChemProgress.markStarted(card.dataset.lesson).catch(()=>{});
 }));
 
 document.querySelectorAll('.complete').forEach(ch=>{
   const id=ch.dataset.id; ch.checked=!!state['done_'+id];
   ch.closest('.lesson-card').classList.toggle('done',ch.checked);
-  ch.addEventListener('change',()=>{state['done_'+id]=ch.checked; ch.closest('.lesson-card').classList.toggle('done',ch.checked); save();});
+  ch.addEventListener('change',()=>{state['done_'+id]=ch.checked; ch.closest('.lesson-card').classList.toggle('done',ch.checked); save(); if(window.ChemProgress) window.ChemProgress.markCompleted(id,ch.checked).catch(()=>{});});
 });
 
 document.querySelectorAll('.notes').forEach(t=>{
   const id=t.dataset.id; t.value=state['note_'+id]||'';
   t.addEventListener('input',()=>{state['note_'+id]=t.value; save();});
+});
+document.querySelectorAll('.lesson-card .video-btn[href]').forEach(a=>{
+  a.addEventListener('click',()=>{
+    const id=a.closest('.lesson-card')?.dataset.lesson;
+    if(id && window.ChemProgress) window.ChemProgress.markVideoOpened(id).catch(()=>{});
+  });
 });
 
 function updateProgress(){
@@ -1271,7 +1284,7 @@ Object.entries(quizzes).forEach(([id,q])=>{
      opts.querySelectorAll('button').forEach(x=>{x.disabled=true});
      btn.classList.add(i===q[2]?'correct':'wrong');
      if(i!==q[2]) opts.children[q[2]].classList.add('correct');
-     feedback.textContent=(i===q[2]?'Верно. ':'Пока нет. ')+q[3];
+     feedback.textContent=(i===q[2]?'Верно. ':'Пока нет. ')+q[3]; if(window.ChemProgress) window.ChemProgress.markQuiz(id,i===q[2]?1:0,1).catch(()=>{});
    }; opts.appendChild(btn);
  });
  card.querySelector('.lesson-body').appendChild(box);
