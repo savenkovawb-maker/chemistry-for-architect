@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Химия для будущего архитектора · интерактивный курс</title>
+<style>
+:root {
+  --bg:#f4f0e8; --paper:#fffdf8; --ink:#1d1d1f; --muted:#6f6b64;
+  --line:#d8d1c5; --accent:#5b5a4f; --soft:#ece5d9; --green:#dfe9dc;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif;line-height:1.55}
+.hero{min-height:62vh;padding:64px 7vw 48px;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;border-bottom:1px solid var(--line);
+background:linear-gradient(120deg,#f7f3eb 0%,#ece8df 100%)}
+.kicker{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:Georgia,serif;font-size:clamp(44px,7vw,84px);line-height:.98;margin:14px 0 20px;font-weight:500}
+.hero p{font-size:19px;max-width:720px;color:#44413c}
+.blueprint{background:#2f343a;color:#f5f7f8;padding:28px;border-radius:4px;min-height:320px;position:relative;overflow:hidden;
+background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
+background-size:24px 24px}
+.blueprint:before{content:"CHEM / ARCH";position:absolute;right:18px;top:16px;font-size:12px;letter-spacing:.18em;opacity:.7}
+.atom{position:absolute;border:1px solid rgba(255,255,255,.72);border-radius:50%;left:50%;top:52%;transform:translate(-50%,-50%)}
+.atom.a{width:220px;height:95px;transform:translate(-50%,-50%) rotate(25deg)}
+.atom.b{width:220px;height:95px;transform:translate(-50%,-50%) rotate(-25deg)}
+.atom.c{width:220px;height:95px;transform:translate(-50%,-50%) rotate(90deg)}
+.nucleus{position:absolute;left:50%;top:52%;width:30px;height:30px;background:#fff;border-radius:50%;transform:translate(-50%,-50%)}
+.nav{position:sticky;top:0;z-index:20;background:rgba(255,253,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 7vw;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.nav a{color:var(--ink);text-decoration:none;padding:8px 12px;border:1px solid var(--line);border-radius:99px;font-size:14px}
+.progress-wrap{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:240px}
+.progress{height:8px;flex:1;background:#e0dbd2;border-radius:10px;overflow:hidden}
+.progress>span{display:block;height:100%;width:0;background:#45453f;transition:.25s}
+main{max-width:1180px;margin:auto;padding:52px 24px 96px}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:58px}
+.panel{background:var(--paper);border:1px solid var(--line);padding:24px;border-radius:12px}
+.panel h3{margin-top:0;font-family:Georgia,serif;font-size:25px}
+.part{margin:70px 0}
+.part-header{display:flex;align-items:end;gap:18px;border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:24px}
+.part-header span{font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.part-header h2{font-family:Georgia,serif;font-size:40px;font-weight:500;margin:0}
+.week{margin:40px 0}
+.week-title h3{font-size:22px;margin:0 0 16px}
+.lesson-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}
+.lesson-top{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:18px 18px}
+.lesson-title{display:flex;align-items:center;gap:12px}
+.lesson-title h3{margin:0;font-size:18px}
+.lesson-num{font-family:Georgia,serif;font-size:24px;color:var(--muted)}
+.toggle{background:none;border:1px solid var(--line);padding:8px 13px;border-radius:8px;cursor:pointer}
+.lesson-body{display:none;padding:0 18px 20px;border-top:1px solid var(--line)}
+.lesson-card.open .lesson-body{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.info,.task,.check{background:#f7f3ec;padding:16px;border-radius:8px}
+.task{margin-top:14px;background:#f1ece2}
+.check{margin-top:10px;background:var(--green)}
+.info p,.task p,.check p{margin:.35em 0}
+.video-btn{display:inline-block;margin-top:6px;text-decoration:none;background:#252525;color:white;padding:8px 12px;border-radius:7px;font-size:14px}
+.video-btn.muted{background:#bdb7ae;color:#555}
+.complete-wrap input{display:none}
+.checkmark{display:block;width:24px;height:24px;border:1px solid #777;border-radius:50%;cursor:pointer;position:relative}
+.complete-wrap input:checked + .checkmark{background:#3f5140;border-color:#3f5140}
+.complete-wrap input:checked + .checkmark:after{content:"✓";color:#fff;position:absolute;left:5px;top:-1px;font-size:18px}
+.lesson-card.done{opacity:.72}
+.notes-label{display:block;margin-top:14px;font-weight:600}
+.notes{width:100%;min-height:90px;margin-top:7px;border:1px solid var(--line);background:#fff;padding:12px;border-radius:8px;font:inherit;resize:vertical}
+.toolrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.toolrow button{border:1px solid var(--line);background:var(--paper);padding:9px 12px;border-radius:8px;cursor:pointer}
+.footer{border-top:1px solid var(--line);padding:30px 7vw 50px;color:var(--muted);font-size:14px}
+.badge{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;margin:4px 4px 0 0}
+@media(max-width:800px){
+ .hero{grid-template-columns:1fr;padding-top:42px} .blueprint{min-height:240px}
+ .intro,.grid2{grid-template-columns:1fr} .progress-wrap{width:100%;margin-left:0}
+ .part-header{display:block} .part-header h2{font-size:32px;margin-top:4px}
+}
+@media print{.nav,.toggle,.toolrow{display:none} .lesson-body{display:block!important} body{background:white} .lesson-card{break-inside:avoid}}
+
+.digital-lab{margin:0 0 68px}
+.lab-title{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}
+.lab-title h2{font-family:Georgia,serif;font-size:38px;font-weight:500;margin:0}
+.lab-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}
+.lab-card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:20px}
+.lab-card h3{font-family:Georgia,serif;font-size:25px;margin:0 0 8px}
+.small-muted{font-size:14px;color:var(--muted)}
+.ptable{display:grid;grid-template-columns:repeat(10,minmax(42px,1fr));gap:6px;margin-top:16px}
+.el{min-height:58px;border:1px solid var(--line);background:#faf7f0;border-radius:7px;padding:6px;cursor:pointer;text-align:left;transition:.15s}
+.el:hover,.el.active{transform:translateY(-1px);border-color:#555;background:#ece7db}
+.el .z{font-size:9px;color:#777;display:block}
+.el .sym{font-family:Georgia,serif;font-size:19px;display:block}
+.element-info{min-height:92px;margin-top:14px;padding:14px;background:#f3efe7;border-radius:8px}
+.canvas-tools{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.canvas-tools button,.canvas-tools input{border:1px solid var(--line);background:#fff;padding:7px 10px;border-radius:7px}
+#chemCanvas{width:100%;height:330px;border:1px solid var(--line);background:white;border-radius:8px;touch-action:none;display:block}
+.board{min-height:230px;width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;padding:14px;outline:none;margin-top:10px}
+.board:empty:before{content:"Пиши здесь конспект, собирай идеи для проекта, вставляй символы и формулы…";color:#aaa}
+.mode-note{margin-top:12px;padding:11px 13px;background:#edf0e8;border-radius:8px;font-size:14px}
+.quizbox{margin-top:14px;padding:14px;border:1px dashed #b9b1a3;border-radius:9px;background:#fffdf9}
+.quizbox b{display:block;margin-bottom:8px}
+.quiz-options{display:grid;gap:7px}
+.quiz-options button{text-align:left;border:1px solid var(--line);background:white;border-radius:7px;padding:9px 11px;cursor:pointer}
+.quiz-options button.correct{background:#dcebd9;border-color:#7d9d76}
+.quiz-options button.wrong{background:#f2dddd;border-color:#b88a8a}
+.quiz-feedback{font-size:14px;margin-top:8px;min-height:20px}
+.screen-task{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 8px;border-radius:999px;background:#e4eadf;margin-left:8px}
+@media(max-width:900px){.lab-grid{grid-template-columns:1fr}.ptable{grid-template-columns:repeat(6,minmax(42px,1fr))}}
+@media(max-width:520px){.ptable{grid-template-columns:repeat(4,minmax(42px,1fr))}}
+
+</style>
+</head>
+<body>
+<header class="hero">
+  <div>
+    <div class="kicker">12 недель · 48 занятий · 3 части</div>
+    <h1>Химия для<br>будущего архитектора</h1>
+    <p>Полностью цифровой курс для визуального и творческого мышления: видео, интерактив, схемы, рисование, материалы и архитектура. Принтер не нужен.</p>
+    <div class="toolrow">
+      <button onclick="document.getElementById('part-1').scrollIntoView()">Начать курс</button>
+      <button onclick="document.getElementById('digitalLab').scrollIntoView()">Открыть цифровую лабораторию</button>
+    </div>
+  </div>
+  <div class="blueprint" aria-hidden="true">
+    <div class="atom a"></div><div class="atom b"></div><div class="atom c"></div><div class="nucleus"></div>
+  </div>
+</header>
+
+<nav class="nav">
+  <a href="#part-1">Часть 1</a>
+  <a href="#part-2">Часть 2</a>
+  <a href="#part-3">Часть 3</a>
+  <div class="progress-wrap"><span id="progressText">0 / 48</span><div class="progress"><span id="progressBar"></span></div></div>
+</nav>
+
+<main>
+<section class="intro">
+  <div class="panel">
+    <h3>Как проходить</h3>
+    <p>Оптимальный ритм — 4 занятия в неделю по 35–45 минут. После каждого занятия поставь галочку. Прогресс и заметки сохраняются автоматически в этом браузере.</p>
+    <span class="badge">Посмотреть</span><span class="badge">Нарисовать</span><span class="badge">Понять</span><span class="badge">Объяснить</span>
+  </div>
+  <div class="panel">
+    <h3>Скетчбук химии архитектора</h3>
+    <p>Принтер не нужен. Всё обязательное можно выполнить прямо на сайте. Скетчбук остаётся дополнительным режимом — только если хочется рисовать карандашом от руки.</p>
+    <div class="toolrow">
+      <button onclick="exportProgress()">Скачать прогресс</button>
+      <button onclick="resetProgress()">Сбросить прогресс</button>
+    </div>
+  </div>
+</section>
+
+
+<section class="digital-lab" id="digitalLab">
+  <div class="lab-title">
+    <div>
+      <div class="kicker">Без принтера</div>
+      <h2>Цифровая лаборатория</h2>
+    </div>
+    <div class="small-muted">Все записи сохраняются в этом браузере</div>
+  </div>
+
+  <div class="lab-grid">
+    <div class="lab-card">
+      <h3>Интерактивная таблица элементов</h3>
+      <p class="small-muted">Нажимай на элементы. Для ключевых элементов курса появится связь с архитектурой и материалами.</p>
+      <div class="ptable" id="ptable"></div>
+      <div class="element-info" id="elementInfo">Выбери элемент.</div>
+    </div>
+
+    <div class="lab-card">
+      <h3>Быстрая рисовалка</h3>
+      <p class="small-muted">Для атомов, молекул, реакций, раскадровок и схем материалов.</p>
+      <div class="canvas-tools">
+        <button type="button" id="penBtn">✏️ Карандаш</button>
+        <button type="button" id="eraserBtn">⌫ Ластик</button>
+        <label class="small-muted">Толщина <input id="brushSize" type="range" min="1" max="18" value="3"></label>
+        <button type="button" id="clearCanvas">Очистить</button>
+        <button type="button" id="saveCanvas">Сохранить PNG</button>
+      </div>
+      <canvas id="chemCanvas"></canvas>
+      <div class="mode-note">Можно выполнить рисунок здесь или, если хочется, в обычном скетчбуке. Печатать шаблоны не нужно.</div>
+    </div>
+
+    <div class="lab-card">
+      <h3>Цифровой архитектурный планшет</h3>
+      <p class="small-muted">Используй вместо листов А3. Здесь можно собирать структуру итоговых проектов и визуальные конспекты.</p>
+      <div id="digitalBoard" class="board" contenteditable="true" spellcheck="true"></div>
+      <div class="canvas-tools">
+        <button type="button" id="saveBoard">Сохранить планшет</button>
+        <button type="button" id="downloadBoard">Скачать TXT</button>
+        <button type="button" id="clearBoard">Очистить</button>
+      </div>
+    </div>
+
+    <div class="lab-card">
+      <h3>Как теперь выполнять задания</h3>
+      <p><b>На экране:</b> таблица элементов, тесты, ответы, расчёты и цифровой планшет.</p>
+      <p><b>В рисовалке:</b> атомы, молекулы, схемы связей, реакции и storyboard.</p>
+      <p><b>На телефоне:</b> короткие видеопрезентации.</p>
+      <p><b>В скетчбуке:</b> только если хочется рисовать от руки. Это необязательный режим.</p>
+      <div class="mode-note">Прогресс, заметки и цифровой планшет хранятся локально на компьютере ученицы, а не отправляются на GitHub.</div>
+    </div>
+  </div>
+</section>
+
+<section class="part" id="part-1"><div class="part-header"><span>Часть 1</span><h2>Увидеть химию</h2></div><div class="week"><div class="week-title"><h3>Неделя 1 · Из чего сделан мир?</h3></div>
+        <article class="lesson-card" data-lesson="1">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="1"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">01</span><h3>1. Химия вокруг архитектора</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять разницу между телом, веществом и материалом.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри вводный урок «Предмет химии» на InternetUrok.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/8-klass/predmet-himii/predmet-himii" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй комнату или фасад. Подпиши 10 материалов: стекло, бетон, металл, краска, дерево, пластик, штукатурка, керамика, ткань, кирпич. Рядом попробуй написать, из каких веществ они могут состоять.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Объясни своими словами: чем предмет отличается от вещества?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="1" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="2">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="2"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">02</span><h3>2. Атом — конструктор мира</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Разобраться, что такое атом, ядро и электроны.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Видео Дениса Маркова «Вся химия с нуля», фрагмент про строение атома.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй атом как архитектурный объект: ядро — центр здания, электронные уровни — этажи. Сделай схемы H, C, O, Na.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Ответь: что находится в ядре и чем атом кислорода отличается от атома углерода?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="2" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="3">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="3"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">03</span><h3>3. Таблица Менделеева как карта</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Научиться ориентироваться в таблице элементов.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Видео Дениса Маркова — блок про периодическую систему.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Открой интерактивную таблицу Менделеева в «Цифровой лаборатории». Нажми Fe, Al, Si, Ca, C, O, Cu, изучи подсказки и запиши в цифровом планшете, где эти элементы встречаются в архитектуре и материалах.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему архитектору важно различать Fe, Al, Cu и Si?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="3" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="4">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="4"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">04</span><h3>4. Выпуск научной передачи №1</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Закрепить тему через собственное объяснение.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Запиши видео на 60–90 секунд: «Из чего состоит окружающий мир?». Используй слова: вещество, атом, ядро, электрон, химический элемент, таблица Менделеева.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Если можешь объяснить без чтения — неделя пройдена.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="4" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 2 · Химический язык</h3></div>
+        <article class="lesson-card" data-lesson="5">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="5"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">05</span><h3>5. Формула — чертёж вещества</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять, что показывает химическая формула.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери примеры H₂O, CO₂, NaCl, CaCO₃.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Для каждой формулы нарисуй состав кружками и подпиши количество атомов. Сравни формулу с архитектурной спецификацией.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Что означают нижние индексы в формулах?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="5" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="6">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="6"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">06</span><h3>6. Валентность — «сколько рук у атома»</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Освоить идею валентности без зубрёжки.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Роман Надточий — блок про валентность.</p><a class="video-btn" href="https://www.youtube.com/watch?v=clFo2XZoDvY" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй H, O, N, C с условными «руками». Соедини их в H₂, H₂O, NH₃, CH₄.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему у воды формула H₂O, а не HO?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="6" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="7">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="7"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">07</span><h3>7. Собираем формулы</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Научиться составлять простые формулы по валентности.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Роман Надточий — блок про составление формул.</p><a class="video-btn" href="https://www.youtube.com/watch?v=clFo2XZoDvY" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Составь и объясни: NaCl, CaCl₂, AlCl₃, Na₂O, CaO, Al₂O₃. Для каждого случая нарисуй схему связей.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Проверь себя без подсказки: формула оксида алюминия?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="7" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="8">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="8"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">08</span><h3>8. Дизайн-проект «Химический алфавит»</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Собрать визуальную карту основных понятий.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Собери цифровой архитектурный планшет прямо на сайте: элемент → атом → молекула → формула → индекс → коэффициент → валентность. Можно добавить схему в рисовалке и сохранить её как PNG.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Сможешь по этому листу объяснить тему другому человеку?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="8" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 3 · Вещества меняются</h3></div>
+        <article class="lesson-card" data-lesson="9">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="9"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">09</span><h3>9. Физическое или химическое?</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Научиться отличать физическое изменение от химической реакции.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Денис Марков — блок про химические реакции.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Раздели примеры: лёд растаял, стекло разбилось, металл заржавел, бумага сгорела, вода испарилась, яйцо сварилось.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Назови главный признак: возникло ли новое вещество?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="9" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="10">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="10"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">10</span><h3>10. Реакция как сценарий</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять смысл химического уравнения.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери 2H₂ + O₂ → 2H₂O.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй реакцию как 3 кадра: что было → что произошло → что получилось. Затем подпиши формулами.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему нельзя просто написать H₂ + O₂ → H₂O и забыть о количестве атомов?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="10" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="11">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="11"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">11</span><h3>11. Уравниваем реакции</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Освоить коэффициенты.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Роман Надточий — блок про химические уравнения.</p><a class="video-btn" href="https://www.youtube.com/watch?v=clFo2XZoDvY" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Уравняй: H₂+O₂→H₂O; Mg+O₂→MgO; Al+O₂→Al₂O₃; Fe+O₂→Fe₂O₃; Ca+O₂→CaO.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Объясни, почему число атомов слева и справа должно совпадать.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="11" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="12">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="12"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">12</span><h3>12. Раскадровка реакции</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Закрепить уравнения визуально.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Выбери одну реакцию и сделай storyboard из трёх кадров. Под каждым кадром подпиши, что происходит.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Покажи реакцию человеку, который не знает химию. Он понял?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="12" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 4 · Семейства веществ</h3></div>
+        <article class="lesson-card" data-lesson="13">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="13"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">13</span><h3>13. Оксиды</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Научиться узнавать оксиды.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Денис Марков или Роман Надточий — классификация веществ.</p><a class="video-btn" href="https://www.youtube.com/watch?v=l8acgGqSDco" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Разбери CO₂, CaO, Fe₂O₃, SiO₂. Найди общий признак и подпиши, где эти вещества встречаются в реальном мире.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему SiO₂ особенно интересен будущему архитектору?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="13" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="14">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="14"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">14</span><h3>14. Кислоты и основания</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять различия на безопасных бытовых примерах.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Коротко повтори тему классов веществ.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай индикатор из краснокочанной капусты и сравни воду, лимонный сок и раствор пищевой соды. Не смешивай бытовую химию.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Как меняется цвет индикатора в кислой и щелочной среде?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="14" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="15">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="15"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">15</span><h3>15. Соли и минералы</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Связать соли со строительными материалами.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери NaCl и CaCO₃.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай карту: мрамор → известняк → мел → CaCO₃. Добавь картинки или свои зарисовки.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Что общего у мрамора, известняка и мела с точки зрения химии?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="15" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="16">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="16"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">16</span><h3>16. Проект «Из чего построен мой дом?»</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Собрать первую часть курса в один проект.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Выбери здание. Собери цифровой планшет: 5 материалов, связанные элементы/вещества, 3 формулы и 1 уравненная реакция. Рисунок можно сделать в встроенной рисовалке. Затем запиши 2–3 минуты видео «Почему архитектору нужна химия материалов».</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Отметь, какие темы ты уже можешь объяснить другому человеку.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="16" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div></section><section class="part" id="part-2"><div class="part-header"><span>Часть 2</span><h2>Лаборатория материалов архитектора</h2></div><div class="week"><div class="week-title"><h3>Неделя 5 · Связи и структура</h3></div>
+        <article class="lesson-card" data-lesson="17">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="17"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">17</span><h3>17. Почему атомы соединяются</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять, зачем атомам химическая связь.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри школьное объяснение химической связи в курсе 9 класса.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй связи как соединения элементов конструкции: одиночные атомы → устойчивые комбинации.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Чем химическая связь похожа на соединение элементов конструкции, а чем нет?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="17" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="18">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="18"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">18</span><h3>18. Ионная связь</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять образование ионов и ионных соединений.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери NaCl как модель.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай комикс: Na отдаёт электрон, Cl принимает. Покажи появление Na⁺ и Cl⁻.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему противоположно заряженные ионы притягиваются?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="18" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="19">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="19"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">19</span><h3>19. Ковалентная связь</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять совместное использование электронов.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери H₂, O₂, H₂O.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй электронные пары как общие «ресурсы» между атомами.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Чем ковалентная связь отличается от ионной?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="19" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="20">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="20"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">20</span><h3>20. Модель материала</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Связать микроструктуру с внешними свойствами.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Выбери стекло, металл или соль и сделай постер: «Что происходит на уровне частиц → какие свойства мы видим».</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Назови одно свойство материала, которое можно связать с его строением.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="20" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 6 · Количество вещества без страха</h3></div>
+        <article class="lesson-card" data-lesson="21">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="21"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">21</span><h3>21. Масса атомов и молекул</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять относительную атомную и молекулярную массу.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Повтори по таблице Менделеева Ar и Mr.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/8-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Рассчитай Mr для H₂O, CO₂, CaCO₃, SiO₂.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Что означает Mr(CaCO₃)?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="21" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="22">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="22"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">22</span><h3>22. Что такое моль</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять моль как способ считать огромное число частиц.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри объяснение количества вещества.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/8-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Придумай свою аналогию: десяток, коробка плитки, палета кирпича, моль. Нарисуй её.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему химикам неудобно считать отдельные атомы?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="22" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="23">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="23"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">23</span><h3>23. Молярная масса</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Связать моль и граммы.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери M = m/n.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Найди молярные массы H₂O, CO₂, CaCO₃, SiO₂ и реши 4 простых задачи.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Сколько граммов имеет 1 моль воды?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="23" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="24">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="24"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">24</span><h3>24. Мини-проект «Спецификация вещества»</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Закрепить расчёты на знакомом формате.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай «спецификацию» для CaCO₃: состав, Mr, молярная масса, где встречается, почему важен для материалов.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Объясни разницу между Mr и молярной массой.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="24" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 7 · Растворы и концентрации</h3></div>
+        <article class="lesson-card" data-lesson="25">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="25"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">25</span><h3>25. Что такое раствор</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять растворитель и растворённое вещество.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери воду с солью и воду с сахаром.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй схему «до растворения / после растворения» на уровне частиц.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Куда «исчезает» соль в воде?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="25" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="26">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="26"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">26</span><h3>26. Массовая доля</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Освоить проценты в растворах.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Формула: w = m(вещества)/m(раствора) × 100%.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Реши 5 задач на растворы 5%, 10%, 20%. Используй знакомые примеры: краска, раствор соли, штукатурная смесь.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Чем 10% раствор отличается от 20%?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="26" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="27">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="27"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">27</span><h3>27. Растворимость</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять, почему не всё растворяется одинаково.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Сравни соль, сахар, мел, масло в воде.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Составь визуальную таблицу растворимости бытовых веществ.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему мел ведёт себя в воде иначе, чем соль?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="27" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="28">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="28"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">28</span><h3>28. Дизайн смеси</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Научиться читать пропорции.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Придумай условную «архитектурную смесь» и визуально покажи массовые доли компонентов как круговую диаграмму.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Проверь: сумма массовых долей равна 100%?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="28" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 8 · Реакции между классами веществ</h3></div>
+        <article class="lesson-card" data-lesson="29">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="29"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">29</span><h3>29. Кислота + основание</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять нейтрализацию.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери простую реакцию HCl + NaOH → NaCl + H₂O на уровне схемы.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй «до/после» и подпиши продукты.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему такая реакция называется нейтрализацией?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="29" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="30">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="30"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">30</span><h3>30. Кислота + карбонат</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять выделение газа.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери безопасный пример уксус + сода только как наблюдение.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Запиши признаки реакции: газ, изменение состава. Не смешивай неизвестные вещества.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Как понять, что произошло химическое превращение?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="30" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="31">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="31"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">31</span><h3>31. Ионные уравнения — идея</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять, что в растворах участвуют ионы.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Используй курс 9 класса InternetUrok.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Перепиши простую реакцию обмена в виде «какие частицы реально встречаются».</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Что такое ион?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="31" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="32">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="32"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">32</span><h3>32. Итог части 2</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Собрать блок материалов и растворов.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Создай разворот «Как химик читает материал»: строение → связь → состав → растворимость → реакции → применение.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Назови 3 темы из части 2, которые уже можешь объяснить другому.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="32" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div></section><section class="part" id="part-3"><div class="part-header"><span>Часть 3</span><h2>Химия архитектора</h2></div><div class="week"><div class="week-title"><h3>Неделя 9 · Металлы и коррозия</h3></div>
+        <article class="lesson-card" data-lesson="33">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="33"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">33</span><h3>33. Металлы вокруг нас</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять общие свойства металлов.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри раздел «Металлы» в курсе 9 класса.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сравни Fe, Al, Cu: плотность, цвет, проводимость, использование в зданиях.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему алюминий и сталь используются в разных конструкциях?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="33" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="34">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="34"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">34</span><h3>34. Что такое сплав</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять, почему чистый металл часто заменяют сплавом.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери сталь как сплав железа с углеродом и другими добавками.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй карточку «чистый металл vs сплав».</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Зачем менять состав металла?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="34" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="35">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="35"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">35</span><h3>35. Почему металл ржавеет</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять идею коррозии.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри выпуск «Химия — Просто» о коррозии.</p><a class="video-btn" href="https://www.youtube.com/watch?v=2GrM0WreOxE" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай схему условий ржавления: металл + кислород + влага.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему ржавчина — это химическая, а не физическая перемена?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="35" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="36">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="36"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">36</span><h3>36. Как защищают конструкции</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Связать химию с инженерными решениями.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай таблицу: краска, цинкование, нержавеющая сталь, защита от влаги — как каждый способ уменьшает коррозию.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Какой способ защиты действует как барьер?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="36" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 10 · Стекло, кремний, керамика</h3></div>
+        <article class="lesson-card" data-lesson="37">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="37"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">37</span><h3>37. Кремний и SiO₂</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять роль кремния в минеральных материалах.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Повтори Si и SiO₂.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй связь: песок → SiO₂ → стекло / силикатные материалы.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему SiO₂ постоянно появляется в теме строительных материалов?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="37" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="38">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="38"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">38</span><h3>38. Как делают стекло</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Связать состав, производство и свойства.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри Veritasium / Vert Dider о стекле.</p><a class="video-btn" href="https://www.youtube.com/watch?v=Na3QSCDiZZk" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай визуальную заметку: сырьё → нагрев → формование → охлаждение → свойства.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему стекло прозрачно и при этом твёрдое?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="38" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="39">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="39"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">39</span><h3>39. Керамика</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять роль минерального сырья и нагрева.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Изучи, как глина превращается в керамический материал.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй процесс как технологическую цепочку.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Что меняет обжиг?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="39" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="40">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="40"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">40</span><h3>40. Материаловедческий коллаж</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Сравнить стекло, керамику и металл.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай архитектурный планшет: 3 материала, их состав/структура, свойства, сильные и слабые стороны.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Какой материал лучше переносит растяжение? Какой — высокую температуру?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="40" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 11 · ОВР и энергия</h3></div>
+        <article class="lesson-card" data-lesson="41">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="41"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">41</span><h3>41. Степень окисления</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять условный заряд элементов в соединениях.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Посмотри раздел об ОВР в курсе 9 класса.</p><a class="video-btn" href="https://interneturok.ru/h/biblioteka/khimiia/9-klass" target="_blank" rel="noopener">▶ Открыть видео</a></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Определи степени окисления в H₂O, CO₂, Fe₂O₃, Al₂O₃.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему у кислорода часто степень окисления −2?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="41" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="42">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="42"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">42</span><h3>42. Окисление и восстановление</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Понять перенос электронов.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери простую схему: кто отдаёт электрон, кто принимает.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй это как обмен ресурсом между двумя участниками.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Кто является восстановителем: тот, кто отдаёт или принимает электроны?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="42" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="43">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="43"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">43</span><h3>43. Коррозия как ОВР</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Связать абстрактную тему с реальным материалом.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Вернись к коррозии металлов.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Подпиши в общей схеме, где происходит окисление железа.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему понимание ОВР помогает объяснить ржавление?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="43" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="44">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="44"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">44</span><h3>44. Энергия химических процессов</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Увидеть, что реакции могут выделять или поглощать тепло.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Разбери экзотермические и эндотермические процессы на простых примерах.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай две визуальные карточки: энергия выходит / энергия требуется.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Горение относится к какому типу?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="44" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div><div class="week"><div class="week-title"><h3>Неделя 12 · Финал</h3></div>
+        <article class="lesson-card" data-lesson="45">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="45"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">45</span><h3>45. Карбонаты в архитектуре</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Закрепить CaCO₃ и его превращения.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Повтори известняк, мел, мрамор.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Нарисуй цикл «порода → материал → воздействие среды».</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Почему кислые среды могут повреждать карбонатные материалы?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="45" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="46">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="46"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">46</span><h3>46. Химия фасада</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Применить знания к реальному объекту.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Выбери фасад здания.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Определи минимум 5 материалов и для каждого опиши возможные химические риски: коррозия, влага, соли, кислоты, УФ.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Как среда влияет на срок службы материала?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="46" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="47">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="47"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">47</span><h3>47. Подготовка финального проекта</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Собрать знания курса.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Выбери реальное здание и подготовь исследование: материалы, элементы, вещества, свойства, реакции, риски и способы защиты.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Проверь, есть ли в проекте минимум 5 химических понятий и 3 уравнения/формулы.</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="47" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        
+        <article class="lesson-card" data-lesson="48">
+          <div class="lesson-top">
+            <label class="complete-wrap"><input type="checkbox" class="complete" data-id="48"><span class="checkmark"></span></label>
+            <div class="lesson-title"><span class="lesson-num">48</span><h3>48. Финальная защита</h3></div>
+            <button class="toggle" aria-expanded="false">Открыть</button>
+          </div>
+          <div class="lesson-body">
+            <div class="grid2">
+              <div class="info"><b>🎯 Цель</b><p>Показать, что химия стала инструментом, а не набором символов.</p></div>
+              <div class="info"><b>🎥 Что посмотреть</b><p>Без нового видео.</p><span class="video-btn muted">Без видео</span></div>
+            </div>
+            <div class="task"><b>✏️ Задание <span class="screen-task">можно без печати</span></b><p>Сделай 5–7 минут презентации «Химия моего здания». Можно снять видео как выпуск научной передачи.</p></div>
+            <div class="check"><b>🔎 Проверка себя</b><p>Ответь себе: какие 5 вещей из курса ты теперь видишь в архитектуре иначе?</p></div>
+            <label class="notes-label">Мои заметки
+              <textarea class="notes" data-id="48" placeholder="Что я поняла, что было сложно, что хочу спросить..."></textarea>
+            </label>
+          </div>
+        </article>
+        </div></section>
+</main>
+
+<footer class="footer">
+  <b>Правило курса:</b> если можешь объяснить тему своими словами и показать её рисунком — значит, ты действительно её поняла.
+  <br><br>Безопасность: домашние опыты — только с пищевыми и заведомо безопасными веществами. Не смешивать чистящие средства, отбеливатели, растворители и неизвестные реагенты.
+</footer>
+
+<script>
+const KEY='chem_arch_course_v1';
+let state=JSON.parse(localStorage.getItem(KEY)||'{}');
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); updateProgress(); }
+
+document.querySelectorAll('.toggle').forEach(btn=>btn.addEventListener('click',()=>{
+  const card=btn.closest('.lesson-card'); card.classList.toggle('open');
+  const open=card.classList.contains('open'); btn.textContent=open?'Свернуть':'Открыть'; btn.setAttribute('aria-expanded',open);
+}));
+
+document.querySelectorAll('.complete').forEach(ch=>{
+  const id=ch.dataset.id; ch.checked=!!state['done_'+id];
+  ch.closest('.lesson-card').classList.toggle('done',ch.checked);
+  ch.addEventListener('change',()=>{state['done_'+id]=ch.checked; ch.closest('.lesson-card').classList.toggle('done',ch.checked); save();});
+});
+
+document.querySelectorAll('.notes').forEach(t=>{
+  const id=t.dataset.id; t.value=state['note_'+id]||'';
+  t.addEventListener('input',()=>{state['note_'+id]=t.value; save();});
+});
+
+function updateProgress(){
+  let done=0; for(let i=1;i<=48;i++) if(state['done_'+i]) done++;
+  document.getElementById('progressText').textContent=done+' / 48';
+  document.getElementById('progressBar').style.width=(done/48*100)+'%';
+}
+function resetProgress(){
+  if(confirm('Удалить все галочки и заметки курса на этом компьютере?')){ localStorage.removeItem(KEY); location.reload(); }
+}
+function exportProgress(){
+  let lines=['Химия для будущего архитектора — прогресс',''];
+  for(let i=1;i<=48;i++){
+    const card=document.querySelector('[data-lesson="'+i+'"]');
+    const title=card.querySelector('h3').textContent;
+    lines.push((state['done_'+i]?'✓ ':'○ ')+title);
+    if(state['note_'+i]) lines.push('   Заметка: '+state['note_'+i].replace(/\n/g,' '));
+  }
+  const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='progress_chemistry_architect.txt'; a.click(); URL.revokeObjectURL(a.href);
+}
+updateProgress();
+
+// ===== Digital lab =====
+const elements = [
+ [1,'H','Водород'],[2,'He','Гелий'],[3,'Li','Литий'],[4,'Be','Бериллий'],[5,'B','Бор'],
+ [6,'C','Углерод'],[7,'N','Азот'],[8,'O','Кислород'],[9,'F','Фтор'],[10,'Ne','Неон'],
+ [11,'Na','Натрий'],[12,'Mg','Магний'],[13,'Al','Алюминий'],[14,'Si','Кремний'],[15,'P','Фосфор'],
+ [16,'S','Сера'],[17,'Cl','Хлор'],[18,'Ar','Аргон'],[19,'K','Калий'],[20,'Ca','Кальций'],
+ [22,'Ti','Титан'],[24,'Cr','Хром'],[25,'Mn','Марганец'],[26,'Fe','Железо'],[27,'Co','Кобальт'],
+ [28,'Ni','Никель'],[29,'Cu','Медь'],[30,'Zn','Цинк'],[35,'Br','Бром'],[47,'Ag','Серебро'],
+ [50,'Sn','Олово'],[53,'I','Иод'],[56,'Ba','Барий'],[74,'W','Вольфрам'],[79,'Au','Золото'],
+ [80,'Hg','Ртуть'],[82,'Pb','Свинец']
+];
+const arch = {
+ H:'Входит в состав воды и множества соединений. В курсе помогает понимать кислоты, основания и реакции.',
+ C:'Углерод важен для органических веществ; присутствует в стали и карбонатах.',
+ O:'Кислород входит в оксиды и участвует в горении и коррозии.',
+ Na:'Натрий встречается в солях и некоторых составах стекла.',
+ Mg:'Магний — лёгкий металл, входит в сплавы.',
+ Al:'Алюминий — лёгкий металл для фасадов, профилей и конструкций. Его оксидная плёнка помогает защищать поверхность.',
+ Si:'Кремний — центральный элемент темы стекла, песка и силикатных материалов.',
+ Cl:'Хлор входит в соли; ион Cl⁻ важен в теме растворов и коррозии.',
+ Ca:'Кальций связан с известняком, мелом, мрамором и строительными минеральными материалами.',
+ Fe:'Железо — основа стали. Ключевой элемент для темы металлов и коррозии.',
+ Cu:'Медь используется в проводке, кровле и инженерных системах.',
+ Zn:'Цинк применяют для защиты стали от коррозии.',
+ Ti:'Титан прочный и коррозионностойкий; используется в специальных архитектурных решениях.',
+ Cr:'Хром входит в нержавеющие стали и влияет на коррозионную стойкость.',
+ Ni:'Никель входит в многие коррозионностойкие сплавы.'
+};
+const ptable = document.getElementById('ptable');
+elements.forEach(([z,sym,name])=>{
+ const b=document.createElement('button'); b.className='el'; b.type='button';
+ b.innerHTML='<span class="z">'+z+'</span><span class="sym">'+sym+'</span>';
+ b.title=name;
+ b.addEventListener('click',()=>{
+   document.querySelectorAll('.el').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+   document.getElementById('elementInfo').innerHTML='<b>'+sym+' · '+name+'</b><br>'+(arch[sym]||'Запомни символ и найди этот элемент в формулах, которые встретятся дальше в курсе.');
+ });
+ ptable.appendChild(b);
+});
+
+// Canvas
+const canvas=document.getElementById('chemCanvas'), ctx=canvas.getContext('2d');
+let drawing=false, erasing=false;
+function fitCanvas(){
+ const dpr=window.devicePixelRatio||1, rect=canvas.getBoundingClientRect();
+ const old=canvas.toDataURL();
+ canvas.width=Math.max(1,Math.round(rect.width*dpr)); canvas.height=Math.max(1,Math.round(rect.height*dpr));
+ ctx.setTransform(dpr,0,0,dpr,0,0); ctx.lineCap='round'; ctx.lineJoin='round';
+ const img=new Image(); img.onload=()=>ctx.drawImage(img,0,0,rect.width,rect.height); img.src=old;
+}
+setTimeout(fitCanvas,50); window.addEventListener('resize',()=>setTimeout(fitCanvas,100));
+function pos(e){const r=canvas.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return [p.clientX-r.left,p.clientY-r.top]}
+function start(e){drawing=true; const [x,y]=pos(e);ctx.beginPath();ctx.moveTo(x,y);e.preventDefault()}
+function move(e){if(!drawing)return;const[x,y]=pos(e);ctx.globalCompositeOperation=erasing?'destination-out':'source-over';ctx.strokeStyle='#1d1d1f';ctx.lineWidth=+document.getElementById('brushSize').value;ctx.lineTo(x,y);ctx.stroke();e.preventDefault()}
+function end(){drawing=false;ctx.beginPath()}
+['mousedown','touchstart'].forEach(x=>canvas.addEventListener(x,start,{passive:false}));
+['mousemove','touchmove'].forEach(x=>canvas.addEventListener(x,move,{passive:false}));
+['mouseup','mouseleave','touchend'].forEach(x=>canvas.addEventListener(x,end));
+document.getElementById('penBtn').onclick=()=>erasing=false;
+document.getElementById('eraserBtn').onclick=()=>erasing=true;
+document.getElementById('clearCanvas').onclick=()=>{ctx.clearRect(0,0,canvas.width,canvas.height)};
+document.getElementById('saveCanvas').onclick=()=>{
+ const a=document.createElement('a');a.download='chemistry-sketch.png';a.href=canvas.toDataURL('image/png');a.click();
+};
+
+// Digital board
+const board=document.getElementById('digitalBoard');
+board.innerHTML=localStorage.getItem('chem_arch_board_v1')||'';
+document.getElementById('saveBoard').onclick=()=>{localStorage.setItem('chem_arch_board_v1',board.innerHTML);alert('Планшет сохранён на этом компьютере.')};
+document.getElementById('clearBoard').onclick=()=>{if(confirm('Очистить цифровой планшет?')){board.innerHTML='';localStorage.removeItem('chem_arch_board_v1')}};
+document.getElementById('downloadBoard').onclick=()=>{
+ const blob=new Blob([board.innerText],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download='chemistry-architect-board.txt';a.click();URL.revokeObjectURL(a.href);
+};
+
+// ===== Small auto-checks for lessons where an exact answer is useful =====
+const quizzes = {
+ 1:['Что является веществом?',['Стекло','Окно','Стул'],0,'Окно и стул — тела (предметы). Стекло — вещество/материал.'],
+ 2:['Где находятся протоны и нейтроны?',['В ядре','На электронных уровнях','В молекуле воды'],0,'Протоны и нейтроны находятся в ядре атома.'],
+ 5:['Что показывает индекс 2 в H₂O?',['Две молекулы воды','Два атома H в одной формульной единице','Два атома O'],1,'Нижний индекс относится к символу перед ним: H₂ означает два атома водорода.'],
+ 6:['Обычная валентность кислорода в школьных примерах:',['I','II','IV'],1,'В большинстве базовых задач кислород двухвалентен.'],
+ 7:['Формула оксида алюминия:',['AlO','Al₂O₃','AlO₂'],1,'Al имеет валентность III, O — II, поэтому Al₂O₃.'],
+ 9:['Что является химическим изменением?',['Лёд растаял','Стекло разбилось','Железо заржавело'],2,'При ржавлении образуются новые вещества.'],
+ 11:['Как уравнять H₂ + O₂ → H₂O?',['H₂ + O₂ → H₂O','2H₂ + O₂ → 2H₂O','H₂ + 2O₂ → H₂O'],1,'С обеих сторон должно быть одинаковое число атомов каждого элемента.'],
+ 13:['Какой вариант является оксидом?',['NaCl','SiO₂','HCl'],1,'Оксид состоит из двух элементов, один из которых кислород.'],
+ 15:['Формула карбоната кальция:',['CaCO₃','CaO','Na₂CO₃'],0,'CaCO₃ связан с известняком, мелом и мрамором.'],
+ 21:['Mr(H₂O), если Ar(H)=1, Ar(O)=16:',['17','18','20'],1,'2×1 + 16 = 18.'],
+ 23:['Молярная масса H₂O:',['18 г/моль','18 моль','16 г/моль'],0,'Численно M(H₂O)=18 г/моль.'],
+ 25:['В растворе соли вода обычно является:',['Растворителем','Осадком','Металлом'],0,'Вода растворяет соль, поэтому это растворитель.'],
+ 26:['10 г соли + 90 г воды. Массовая доля соли:',['5%','10%','90%'],1,'Масса раствора 100 г; 10/100×100%=10%.'],
+ 31:['Положительно или отрицательно заряженная частица — это:',['Ион','Изотоп','Молекула'],0,'Ион имеет электрический заряд.'],
+ 33:['Какой металл является основой обычной стали?',['Fe','Al','Cu'],0,'Сталь — сплав на основе железа.'],
+ 35:['Что необходимо для обычного ржавления железа?',['Только свет','Кислород и влага','Только холод'],1,'Влага и кислород создают условия для коррозии.'],
+ 37:['Какой элемент обозначается Si?',['Сера','Кремний','Кальций'],1,'Si — кремний.'],
+ 41:['Типичная степень окисления O в H₂O:',['−2','+2','0'],0,'В воде кислород имеет степень окисления −2.'],
+ 42:['Восстановитель в ОВР обычно:',['Принимает электроны','Отдаёт электроны','Не участвует в электронах'],1,'Восстановитель отдаёт электроны и сам окисляется.'],
+ 44:['Горение обычно:',['Выделяет тепло','Всегда охлаждает','Не связано с энергией'],0,'Горение — типичный экзотермический процесс.']
+};
+Object.entries(quizzes).forEach(([id,q])=>{
+ const card=document.querySelector('.lesson-card[data-lesson="'+id+'"]'); if(!card)return;
+ const box=document.createElement('div');box.className='quizbox';
+ box.innerHTML='<b>⚡ Быстрая проверка: '+q[0]+'</b><div class="quiz-options"></div><div class="quiz-feedback"></div>';
+ const opts=box.querySelector('.quiz-options'), feedback=box.querySelector('.quiz-feedback');
+ q[1].forEach((txt,i)=>{
+   const btn=document.createElement('button');btn.type='button';btn.textContent=txt;
+   btn.onclick=()=>{
+     opts.querySelectorAll('button').forEach(x=>{x.disabled=true});
+     btn.classList.add(i===q[2]?'correct':'wrong');
+     if(i!==q[2]) opts.children[q[2]].classList.add('correct');
+     feedback.textContent=(i===q[2]?'Верно. ':'Пока нет. ')+q[3];
+   }; opts.appendChild(btn);
+ });
+ card.querySelector('.lesson-body').appendChild(box);
+});
+
+</script>
+</body>
+</html>
